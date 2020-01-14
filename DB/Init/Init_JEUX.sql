@@ -1,0 +1,10 @@
+USE BETES;
+
+INSERT INTO JEUX (`NOM`, `LOGO`, `ID_API_EXTERNE`) VALUES
+('League of Legends', null, 1);
+
+INSERT INTO JEUX (`NOM`, `LOGO`, `ID_API_EXTERNE`) VALUES
+('CS : GO', null, 3);
+
+INSERT INTO JEUX (`NOM`, `LOGO`, `ID_API_EXTERNE`) VALUES
+('PUBG', null, 20);

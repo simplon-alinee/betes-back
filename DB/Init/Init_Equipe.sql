@@ -1,0 +1,7 @@
+USE BETES;
+
+INSERT INTO EQUIPE (`ID_JEUX`, `NOM_EQUIPE`, `LOGO`, `ID_API_EXTERNE`)
+VALUES (1, 'FNATIC', null, );
+
+
+select * from JEUX;
