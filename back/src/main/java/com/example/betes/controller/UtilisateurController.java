@@ -12,8 +12,16 @@ public class UtilisateurController {
     @Autowired
     private UtilisateurService utilisateurService;
 
+
+    @GetMapping
+    public String sayHello(){
+        return "Hello";
+    }
+
+
     @GetMapping("/{id}")
-    public void getById(@PathVariable("id") Integer id) {
+    public Utilisateur getById(@PathVariable("id") Integer id) {
         System.out.println(utilisateurService.getById(1));
+        return utilisateurService.getById(id);
     }
 }

@@ -24,9 +24,15 @@ public class Utilisateur {
     private String nom;
     private String prenom;
     private  String pseudo;
+
+    @Column(name = "date_naissance")
     private Date dateNaissance;
     private String password;
     private String role;
+
+    @Column(name = "date_inscription")
     private Date dateInscription;
+
+    @Column(name = "validation_inscription")
     private Boolean validationInscription;
 }
