@@ -1,5 +1,6 @@
 package com.example.betes.service;
 
+import com.example.betes.exception.ResourceNotFoundException;
 import com.example.betes.model.Utilisateur;
 import com.example.betes.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,11 @@ public class UtilisateurService {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-    public Optional<Utilisateur> getById(Integer id) {
-        return utilisateurRepository.findById(id);
-    };
+    public Utilisateur getById(Integer id) {
+        Optional<Utilisateur> optUser = utilisateurRepository.findById(id);
+        if (optUser.isPresent() ) { return optUser.get();} else {throw new ResourceNotFoundException();
+        }
+    }
 
 
 }
