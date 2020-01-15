@@ -1,0 +1,41 @@
+Informations des 廦uipes:
+:::::::::::::::::::::::::::::::::
+CS-GO {
+id api : 3
+nom: CS:GO
+nomComplet: Counter-Strike-Global-Offensive
+api-Request-name: cs-go
+}
+
+lol {
+id api : 1
+nom: LoL
+nomComplet: league-of-legends
+api-Request-name: lol
+}
+
+Dota 2 {
+id api : 4
+nom: Dota 2
+nomComplet: dota-2
+api-Request-name: dota2
+}
+
+"Overwatch",{
+id api : 14,
+nom: Overwatch
+nomComplet:  Overwatch
+api-Request-name: ow
+}
+
+"PUBG"{
+id api :20,
+nom: PUBG
+nomComplet: Player Unknown Battle Ground
+api-Request-name: pubg
+}
+
+中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中
+中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中
+中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中
+
