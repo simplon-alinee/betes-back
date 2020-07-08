@@ -19,8 +19,6 @@ public class PandaApiService {
     private RestTemplate restTemplate;
 
     public PandaApiService(RestTemplateBuilder restTemplateBuilder) {
-
-
         this.restTemplate = restTemplateBuilder.build();
     }
 

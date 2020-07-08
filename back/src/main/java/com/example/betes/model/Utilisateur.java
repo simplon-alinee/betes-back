@@ -1,7 +1,6 @@
 package com.example.betes.model;
 
 import lombok.*;
-import sun.security.util.Password;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
