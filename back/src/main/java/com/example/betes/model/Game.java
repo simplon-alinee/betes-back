@@ -19,7 +19,7 @@ public class Game {
 	@Id
 	@Column(name = "ID_GAME")
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Long id;
+	private Long idGame;
 
 	@Column(name = "NAME")
 	@NotNull
@@ -34,7 +34,6 @@ public class Game {
 	private String nameApiExt;
 
 	@Column(name = "LOGO")
-	@NotNull
 	@Lob
 	private Byte[] logo;
 

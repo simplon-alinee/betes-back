@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Blob;
+
 
 @Getter
 @Setter
@@ -30,7 +30,8 @@ public class Team {
     private String teamName;
 
     @Column(name = "LOGO")
-    private Blob logo;
+    @Lob
+    private Byte[] logo;
 
     @Column(name = "ID_API_EXT", unique = true)
     @NotNull
