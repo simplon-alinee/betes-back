@@ -20,4 +20,9 @@ public class PandaApiController {
     public String pandaApiTest() throws IOException, InterruptedException {
         return pandaApiService.testApiConnection();
     }
+
+    @GetMapping("/allGames")
+    private String getListeJeux()  throws IOException, InterruptedException {
+        return pandaApiService.listeGameApi();
+    }
 }
