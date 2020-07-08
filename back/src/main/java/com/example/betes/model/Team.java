@@ -19,7 +19,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "ID_TEAM")
-    private Long id;
+    private Long idTeam;
 
     @Column(name = "ID_GAME", length = 20)
     @NotNull
