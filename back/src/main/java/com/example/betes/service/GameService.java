@@ -3,7 +3,6 @@ package com.example.betes.service;
 
 import com.example.betes.exception.ResourceNotFoundException;
 import com.example.betes.model.Game;
-import com.example.betes.model.Matches;
 import com.example.betes.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
