@@ -15,7 +15,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User getById(Integer id) {
+    public User getById(Long id) {
         Optional<User> optUser = userRepository.findById(id);
         if (optUser.isPresent() ) { return optUser.get();} else {throw new ResourceNotFoundException();
         }
