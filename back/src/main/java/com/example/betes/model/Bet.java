@@ -1,11 +1,10 @@
 package com.example.betes.model;
 
 import lombok.*;
-import org.hibernate.mapping.ToOne;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.Date;
 
 @Getter
@@ -27,6 +26,9 @@ public class Bet {
 
     @OneToOne
     private Matches matches;
+
+    @OneToOne
+    private Team betOnTeam;
 
 
     @NotNull
