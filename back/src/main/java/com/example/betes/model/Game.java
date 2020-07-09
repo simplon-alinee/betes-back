@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Blob;
 import java.util.List;
 
 @Getter
@@ -18,31 +17,31 @@ import java.util.List;
 public class Game {
 
 	@Id
-	@Column(name = "ID_GAME")
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Long idGame;
+	private Long id;
 
-	@Column(name = "NAME")
 	@NotNull
 	private String name;
 // est-ce utile? j'ai un doute
-	@Column(name = "SHORT_NAME")
 	@NotNull
 	private String shortName;
 	/**
 	 * correspond au slug utilisé par l'api pandascore
 	 */
-	@Column(name = "NAME_API_EXT")
 	@NotNull
 	private String nameApiExt;
 	/**
 	 * doit être ajouté manuellement
 	 */
-	@Column(name = "LOGO")
 	private String logo;
 
-	@Column(name = "ID_API_EXT", unique = true)
 	@NotNull
 	@UniqueElements
 	private Long idApiExt;
+
+	@OneToMany
+	private List<Team> teamList;
+
+	@OneToMany
+	private List<Matches> matchesList;
 }

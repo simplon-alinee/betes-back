@@ -1,12 +1,12 @@
 package com.example.betes.model;
 
 import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
+import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-
+import javax.validation.constraints.Null;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,30 +15,26 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
+public class Bet {
 
-public class Team {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @OneToOne
-    private Game game;
+    private User user;
+
+    @OneToOne
+    private Matches matches;
+
 
     @NotNull
-    private String teamName;
+    private Date dateBet;
 
-    private String logo;
+    private Boolean resultBet;
 
-    @NotNull
-    @UniqueElements
-    private Integer idApiExt;
-
-    @OneToMany
-    private List<Matches> matchesList;
-
-
+    private Date dateUpdate;
 
 
 

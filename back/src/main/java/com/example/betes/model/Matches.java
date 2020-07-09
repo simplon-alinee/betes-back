@@ -1,10 +1,12 @@
 package com.example.betes.model;
 
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,26 +15,31 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-// nommé MATCHES car MATCH provoque une erreur en DB (certainement mot-clé côté DB)
 public class Matches {
+
+    // nommé MATCHES car MATCH provoque une erreur en DB (certainement mot-clé côté DB)
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "ID_MATCHES")
-    private Long idMatches;
+    private Long id;
 
-    @Column(name = "GAME_NAME", length = 50)
     @NotNull
-    private String gameName;
+    @OneToOne
+    private Game Game;
 
-    @Column(name = "DATE_MATCH")
     private Date dateMatch;
 
-    @Column(name = "WINNER", length = 50)
-    private String winner;
+    @OneToOne
+    private Team winner;
 
-    @Column(name = "ID_API_EXT", unique = true)
     @NotNull
+    @UniqueElements
     private Integer idApiExt;
+
+    @OneToMany
+    private List<Bet> listBet;
+
+    @OneToMany
+    private List<Team> teamsParticipating;
 
 }
