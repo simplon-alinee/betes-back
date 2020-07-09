@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Blob;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,18 +25,21 @@ public class Game {
 	@Column(name = "NAME")
 	@NotNull
 	private String name;
-
+// est-ce utile? j'ai un doute
 	@Column(name = "SHORT_NAME")
 	@NotNull
 	private String shortName;
-
+	/**
+	 * correspond au slug utilisé par l'api pandascore
+	 */
 	@Column(name = "NAME_API_EXT")
 	@NotNull
 	private String nameApiExt;
-
+	/**
+	 * doit être ajouté manuellement
+	 */
 	@Column(name = "LOGO")
-	@Lob
-	private Byte[] logo;
+	private String logo;
 
 	@Column(name = "ID_API_EXT", unique = true)
 	@NotNull
