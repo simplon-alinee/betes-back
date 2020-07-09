@@ -22,9 +22,6 @@ public class Game {
 
 	@NotNull
 	private String name;
-// est-ce utile? j'ai un doute
-	@NotNull
-	private String shortName;
 	/**
 	 * correspond au slug utilisé par l'api pandascore
 	 */

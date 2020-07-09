@@ -1,7 +1,9 @@
 package com.example.betes.controller;
 
 
+import com.example.betes.model.DataLog;
 import com.example.betes.model.Game;
+import com.example.betes.service.DataLogService;
 import com.example.betes.service.PandaApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,8 @@ public class PandaApiController {
 
     @Autowired
     private PandaApiService pandaApiService;
+    @Autowired
+    private DataLogService dataLogService;
 
     @GetMapping
     public String pandaApiTest() throws IOException, InterruptedException {
@@ -24,7 +28,12 @@ public class PandaApiController {
     }
 
     @GetMapping("/allGames")
-    private List<Game> getListeJeux()  throws IOException, InterruptedException {
-        return pandaApiService.listeGameApi();
+    private void getListeJeux()  throws IOException, InterruptedException {
+        pandaApiService.listeGameApi();
+    }
+
+    @GetMapping("/needUpdate")
+    private void needUpd()  throws IOException, InterruptedException {
+        pandaApiService.needUpdate();
     }
 }
