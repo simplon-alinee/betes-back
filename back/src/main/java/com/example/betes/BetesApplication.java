@@ -13,8 +13,4 @@ public class BetesApplication {
 		SpringApplication.run(BetesApplication.class, args);
 	}
 
-
-	public void test (){
-		System.out.println("toto");
-	}
 }

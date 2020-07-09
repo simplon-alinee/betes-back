@@ -28,12 +28,17 @@ public class PandaApiController {
     }
 
     @GetMapping("/allGames")
-    private void getListeJeux()  throws IOException, InterruptedException {
+    private void getListeGames()  throws IOException, InterruptedException {
         pandaApiService.listeGameApi();
     }
 
     @GetMapping("/needUpdate")
     private void needUpd()  throws IOException, InterruptedException {
         pandaApiService.needUpdate();
+    }
+
+    @GetMapping("/allTeams")
+    private String getListeTeams()  throws IOException, InterruptedException {
+        return pandaApiService.listTeams();
     }
 }

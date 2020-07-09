@@ -6,6 +6,7 @@ import com.example.betes.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,5 +22,16 @@ public class TeamService {
         } else {
             throw new ResourceNotFoundException();
         }
+    }
+
+    public Long getIdInterneByIdApiExterne(Long idExt){
+        return teamRepository.getIdByIdApiExtEquals(idExt);
+    }
+    public Team getByIdExt(Long idExt){
+        return teamRepository.getTeamByIdApiExt(idExt);
+    }
+
+    public void saveAll(List<Team> listTeam){
+        teamRepository.saveAll(listTeam);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.betes.model;
 
 import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-
 public class Team {
 
     @Id
@@ -31,9 +29,7 @@ public class Team {
 
     private String logo;
 
-    @NotNull
-    @UniqueElements
-    private Integer idApiExt;
+    private Long idApiExt;
 
     @OneToMany
     private List<Matches> matchesList;

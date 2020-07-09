@@ -33,7 +33,6 @@ public class Game {
 	private String logo;
 
 	@NotNull
-	@UniqueElements
 	private Long idApiExt;
 
 	@OneToMany
