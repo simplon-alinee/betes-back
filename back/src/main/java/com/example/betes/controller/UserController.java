@@ -20,8 +20,8 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable("id") Integer id) {
-        System.out.println(userService.getById(1));
+    public User getById(@PathVariable("id") Long id) {
+        System.out.println(userService.getById(1l));
         return userService.getById(id);
     }
 }
