@@ -28,10 +28,8 @@ public class CustomGameDeserializer extends StdDeserializer<Game> {
 		ObjectCodec codec = parser.getCodec();
 		JsonNode node = codec.readTree(parser);
 
-		// try catch block
 		game.setName(node.get("name").asText());
 		game.setNameApiExt(node.get("slug").asText());
-//		game.setLogo(node.get("image_url").asText());
 		game.setIdApiExt(node.get("id").asLong());
 
 		return game;

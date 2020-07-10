@@ -32,24 +32,12 @@ public class CustomTeamDeserializer extends StdDeserializer<Team> {
 		ObjectCodec codec = parser.getCodec();
 		JsonNode node = codec.readTree(parser);
 
-
-		// try catch block
-//		team.setName(node.get("name").asText());
-//		team.setNameApiExt(node.get("slug").asText());
-////		game.setLogo(node.get("image_url").asText());
-//		team.setIdApiExt(node.get("id").asLong());
-
 		Game gameTemp = new Game();
-//		System.out.println(gameT);
-		String test = node.get("acronym").asText();
-//		Long idGame = ;
 		gameTemp.setIdApiExt(node.get("current_videogame").get("id").asLong());
 		team.setGame(gameTemp);
 		team.setIdApiExt(node.get("id").asLong());
 		team.setLogo(node.get("image_url").asText());
 		team.setTeamName(node.get("name").asText());
-//		Game game = gameRepository.findGameByIdApiExtEquals(id);
-//		team.setGame(this.gameRepository.findByIdApiExt(Long.parseLong(node.get("current_videogame").get("id")) ));
 		System.out.println(team);
 		System.out.println('t');
 		return team;

@@ -34,7 +34,7 @@ public class PandaApiController {
 
     @GetMapping("/needUpdate")
     private void needUpd()  throws IOException, InterruptedException {
-        pandaApiService.needUpdate();
+//        pandaApiService.needUpdate();
     }
 
     @GetMapping("/allTeams")
