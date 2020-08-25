@@ -32,7 +32,7 @@ public class GameService {
 	private GameRepository gameRepository;
 
 
-	public Page<Game> findAllBets(
+	public Page<Game> findAllGames(
 			@Min(message = "Le numéro de page ne peut être inférieur à 0", value = PAGE_MIN)
 					Integer page,
 			@Min(value = PAGE_SIZE_MIN, message = PAGE_VALID_MESSAGE)
@@ -49,7 +49,7 @@ public class GameService {
 		}
 
 		Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
-		Page<Game> games = gameRepository.findAllByOrderByName(pageable);
+		Page<Game> games = gameRepository.findAllByOrderByNameAsc(pageable);
 		if(page >= games.getTotalPages()){
 			throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + games.getTotalPages());
 		} else if(games.getTotalElements() == 0){

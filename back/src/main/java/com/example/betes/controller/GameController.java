@@ -25,7 +25,7 @@ public class GameController {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sortProperty", defaultValue = "name") String sortProperty,
-            @RequestParam(value = "sortDirection", defaultValue = "DESC") Sort.Direction sortDirection) {
-        return gameService.findAllBets(page, size, sortProperty, sortDirection);
+            @RequestParam(value = "sortDirection", defaultValue = "ASC") Sort.Direction sortDirection) {
+        return gameService.findAllGames(page, size, sortProperty, sortDirection);
     }
 }

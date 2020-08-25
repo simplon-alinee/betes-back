@@ -1,7 +1,6 @@
 package com.example.betes.repository;
 
-import com.example.betes.model.Bet;
-import com.example.betes.model.DataLog;
+
 import com.example.betes.model.Game;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,5 +11,5 @@ public interface GameRepository extends PagingAndSortingRepository<Game, Long > 
 
 	public Game findGameByIdApiExtEquals(Long idApiExt);
 
-	Page<Game> findAllByOrderByName(Pageable pageable);
+	Page<Game> findAllByOrderByNameAsc(Pageable pageable);
 }
