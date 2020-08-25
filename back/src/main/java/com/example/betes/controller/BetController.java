@@ -15,10 +15,7 @@ public class BetController {
     private BetService betService;
 
     @GetMapping("/{id}")
-    public Bet getById(@PathVariable("id") Long id) {
-        System.out.println("toto");
-        return betService.getById(id);
-    }
+    public Bet getById(@PathVariable("id") Long id) { return betService.getById(id); }
 
     @GetMapping("/all")
     public Page<Bet> findAllBets(
