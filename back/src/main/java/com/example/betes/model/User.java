@@ -47,6 +47,8 @@ public class User {
     @NotNull
     private Boolean validationInscription;
 
+    private Long score;
+
     @JsonBackReference
     @OneToMany
     private List<Bet> listBet;
