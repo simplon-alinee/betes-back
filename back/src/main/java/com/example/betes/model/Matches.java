@@ -31,6 +31,7 @@ public class Matches {
 
     private Date dateMatch;
 
+    @JsonManagedReference
     @OneToOne
     private Team winner;
 
