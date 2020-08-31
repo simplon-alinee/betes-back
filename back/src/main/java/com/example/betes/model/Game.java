@@ -1,5 +1,6 @@
 package com.example.betes.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -35,9 +36,11 @@ public class Game {
 	@NotNull
 	private Long idApiExt;
 
+	@JsonBackReference
 	@OneToMany
 	private List<Team> teamList;
 
+	@JsonBackReference
 	@OneToMany
 	private List<Matches> matchesList;
 }

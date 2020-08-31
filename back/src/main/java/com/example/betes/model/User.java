@@ -1,5 +1,6 @@
 package com.example.betes.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -46,6 +47,7 @@ public class User {
     @NotNull
     private Boolean validationInscription;
 
+    @JsonBackReference
     @OneToMany
     private List<Bet> listBet;
 

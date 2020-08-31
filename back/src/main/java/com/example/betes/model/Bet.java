@@ -1,5 +1,6 @@
 package com.example.betes.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 
@@ -21,11 +22,15 @@ public class Bet {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+    @JsonManagedReference
     @OneToOne
     private User user;
 
+    /*
+    matchId because matches causes a bug with jpa
+     */
     @OneToOne
-    private Matches matches;
+    private Matches matchEntity;
 
     @OneToOne
     private Team betOnTeam;
