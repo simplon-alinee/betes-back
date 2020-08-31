@@ -3,6 +3,7 @@ package com.example.betes.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,7 +30,6 @@ public class User {
     private String firstname;
 
     @NotNull
-    @UniqueElements
     private  String username;
 
     @NotNull
@@ -47,6 +47,7 @@ public class User {
     @NotNull
     private Boolean validationInscription;
 
+    @Value("0")
     private Long score;
 
     @JsonBackReference

@@ -17,6 +17,7 @@ public class DemoController {
      */
     @GetMapping("/init")
     public MatchEntity initDemo() {
+        demoService.createDemoUser();
         return demoService.createMatchDemo();
     }
 
