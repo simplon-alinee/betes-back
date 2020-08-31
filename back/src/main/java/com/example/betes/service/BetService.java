@@ -1,9 +1,11 @@
 package com.example.betes.service;
 
+import com.example.betes.exception.ResourceAlreadyExistException;
 import com.example.betes.exception.ResourceNotFoundException;
-import com.example.betes.model.Bet;
-import com.example.betes.model.User;
+import com.example.betes.model.*;
 import com.example.betes.repository.BetRepository;
+import com.example.betes.repository.MatchesRepository;
+import com.example.betes.repository.TeamRepository;
 import com.example.betes.repository.UserRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -32,6 +37,11 @@ public class BetService {
     private BetRepository betRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TeamRepository teamRepository;
+    @Autowired
+    private MatchesRepository matchesRepository;
+
 
     public Bet getById(Long id) {
         Optional<Bet> optBet = betRepository.findById(id);
@@ -97,6 +107,34 @@ public class BetService {
         }
         return bets;
     }
+    public Bet createBet(BetSkeleton betSkeleton) {
+        Date createDate = new Date();
+        User user;
+        Team team;
+        Matches match;
+        if (userRepository.findById(betSkeleton.getUserId()).isPresent()) {
+            user = userRepository.findById(betSkeleton.getUserId()).get();
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "utilisateur inexistant");
+        if (teamRepository.findById(betSkeleton.getBetOnTeamId()).isPresent()) {
+            team = teamRepository.findById(betSkeleton.getBetOnTeamId()).get();
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "team inexistante");
+        if (matchesRepository.findById(betSkeleton.getMatchId()).isPresent()) {
+            match = matchesRepository.findById(betSkeleton.getMatchId()).get();
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "match inexistant");
 
+//        if (betRepository.existsByBetOnTeamAndUserAndMatchEntity(team, user, match)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ce pari existe déjà");
+        if (betRepository.existsByUserAndMatchEntity(user, match)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le joueur à déjà parié sur ce match");
+
+        Bet newBet = new Bet();
+        newBet.setBetOnTeam(team);
+        newBet.setMatchEntity(match);
+        newBet.setUser(user);
+        newBet.setResultBet(null);
+        newBet.setDateBet(createDate);
+        newBet.setDateUpdate(null);
+
+        betRepository.save(newBet);
+        return newBet;
+    }
 
 }
