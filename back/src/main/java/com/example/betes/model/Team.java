@@ -1,5 +1,7 @@
 package com.example.betes.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +33,7 @@ public class Team {
 
     private Long idApiExt;
 
+    @JsonBackReference
     @ManyToMany
     private List<Matches> matchesList;
 

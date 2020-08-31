@@ -1,6 +1,7 @@
 package com.example.betes.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -40,7 +41,7 @@ public class Matches {
     @OneToMany
     private List<Bet> listBet;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToMany(mappedBy = "matchesList")
     private List<Team> teamsParticipating;
 
