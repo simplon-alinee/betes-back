@@ -10,4 +10,5 @@ public interface DataLogRepository extends PagingAndSortingRepository<DataLog, L
 
 	DataLog findFirstByGoalOrderByIdDesc(String goal);
 
+	DataLog findFirstByGoalAndConcernedDataOrderByIdDesc(String goal, String concernedData);
 }

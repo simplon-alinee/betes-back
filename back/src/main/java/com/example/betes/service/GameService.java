@@ -74,4 +74,8 @@ public class GameService {
 	public Game getByIdExt(Long id) {
 		return this.gameRepository.findGameByIdApiExtEquals(id);
 	}
+
+	public Game getUnsupportedGame(){
+		return this.gameRepository.getByNameEquals("unsupported");
+	}
 }

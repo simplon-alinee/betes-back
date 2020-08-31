@@ -1,6 +1,5 @@
 package com.example.betes.service;
 
-import com.example.betes.exception.ResourceAlreadyExistException;
 import com.example.betes.exception.ResourceNotFoundException;
 import com.example.betes.model.*;
 import com.example.betes.repository.*;
@@ -17,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -109,7 +107,7 @@ public class BetService {
         Date createDate = new Date();
         User user;
         Team team;
-        Matches match;
+        MatchEntity match;
         if (userRepository.findById(betSkeleton.getUserId()).isPresent()) {
             user = userRepository.findById(betSkeleton.getUserId()).get();
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "utilisateur inexistant");
@@ -138,19 +136,19 @@ public class BetService {
     /**
      * Cette méthode prend un match TERMINE en paramètre,
      * va trouver chaque pari lié a ce match, et modifier le resultat
-     * @param matches
+     * @param matchEntity
      */
-    public void updateBetResult(Matches matches) {
+    public void updateBetResult(MatchEntity matchEntity) {
         Team winningTeam;
         Date updateDate = new Date();
         DataLog dataLog = new DataLog();
         dataLog.setConcernedData("BET");
         dataLog.setGoal("UPDATE BET");
         dataLog.setLastModifDate(updateDate);
-        if (matches.getWinner() != null) {
-            winningTeam = matches.getWinner();
+        if (matchEntity.getWinner() != null) {
+            winningTeam = matchEntity.getWinner();
         } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "match non terminé");
-        List<Bet> listBetOfMatches = betRepository.findAllByMatchEntity(matches);
+        List<Bet> listBetOfMatches = betRepository.findAllByMatchEntity(matchEntity);
         for (Bet curBet : listBetOfMatches) {
             // si result match est égal au paris fait; puis up le score de 1;
             curBet.setResultBet(curBet.getBetOnTeam().equals(winningTeam));

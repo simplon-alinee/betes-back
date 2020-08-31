@@ -1,14 +1,8 @@
 package com.example.betes.controller;
 
-import com.example.betes.model.Bet;
-import com.example.betes.model.BetSkeleton;
-import com.example.betes.service.BetService;
+import com.example.betes.model.MatchEntity;
 import com.example.betes.service.DemoService;
-import javassist.NotFoundException;
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +16,8 @@ public class DemoController {
      * risque
      */
     @GetMapping("/init")
-    public void initDemo() {
-        //
+    public MatchEntity initDemo() {
+        return demoService.createMatchDemo();
     }
 
     /**
@@ -34,5 +28,6 @@ public class DemoController {
     public void demoGo( @PathVariable("matchId") Long matchId) {
         demoService.demoGo(matchId);
     }
+
 
 }

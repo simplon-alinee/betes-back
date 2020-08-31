@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class Matches {
+public class MatchEntity {
 
     // nommé MATCHES car MATCH provoque une erreur en DB (certainement mot-clé côté DB)
 
@@ -36,14 +36,13 @@ public class Matches {
     private Team winner;
 
     @NotNull
-    @UniqueElements
     private Integer idApiExt;
 
     @OneToMany
     private List<Bet> listBet;
 
     @JsonManagedReference
-    @ManyToMany(mappedBy = "matchesList")
+    @ManyToMany()
     private List<Team> teamsParticipating;
 
 }

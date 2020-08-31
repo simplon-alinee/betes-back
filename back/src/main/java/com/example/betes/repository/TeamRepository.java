@@ -12,4 +12,6 @@ public interface TeamRepository extends PagingAndSortingRepository<Team, Long > 
 	public Team getTeamByIdApiExt(Long idExt);
 
 	Page<Team> findAllByOrderByTeamName(Pageable pageable);
+
+	Team getById(Long id);
 }

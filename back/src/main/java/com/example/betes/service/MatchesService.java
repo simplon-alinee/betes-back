@@ -1,7 +1,7 @@
 package com.example.betes.service;
 
 import com.example.betes.exception.ResourceNotFoundException;
-import com.example.betes.model.Matches;
+import com.example.betes.model.MatchEntity;
 import com.example.betes.repository.MatchesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,13 +29,13 @@ public class MatchesService {
     @Autowired
     private MatchesRepository matchesRepository;
 
-    public Matches getById(Long id) {
-        Optional<Matches> optMatches = matchesRepository.findById(id);
+    public MatchEntity getById(Long id) {
+        Optional<MatchEntity> optMatches = matchesRepository.findById(id);
         if (optMatches.isPresent() ) { return optMatches.get();} else {throw new ResourceNotFoundException();
         }
     }
 
-    public Page<Matches> findAllMatches(
+    public Page<MatchEntity> findAllMatches(
             @Min(message = "Le numéro de page ne peut être inférieur à 0", value = PAGE_MIN)
                     Integer page,
             @Min(value = PAGE_SIZE_MIN, message = PAGE_VALID_MESSAGE)
@@ -45,14 +45,14 @@ public class MatchesService {
             Sort.Direction sortDirection
     ) {
         //Vérification de sortProperty
-        if(Arrays.stream(Matches.class.getDeclaredFields()).
+        if(Arrays.stream(MatchEntity.class.getDeclaredFields()).
                 map(Field::getName).
                 filter(s -> s.equals(sortProperty)).count() != 1){
             throw new IllegalArgumentException("La propriété " + sortProperty + " n'existe pas !");
         }
 
         Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
-        Page<Matches> matches = matchesRepository.findAllByOrderByDateMatchDesc(pageable);
+        Page<MatchEntity> matches = matchesRepository.findAllByOrderByDateMatchDesc(pageable);
         if(page >= matches.getTotalPages()){
             throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + matches.getTotalPages());
         } else if(matches.getTotalElements() == 0){

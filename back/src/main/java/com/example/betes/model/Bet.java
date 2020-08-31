@@ -30,7 +30,7 @@ public class Bet {
     matchId because matches causes a bug with jpa
      */
     @OneToOne
-    private Matches matchEntity;
+    private MatchEntity matchEntity;
 
     @OneToOne
     private Team betOnTeam;

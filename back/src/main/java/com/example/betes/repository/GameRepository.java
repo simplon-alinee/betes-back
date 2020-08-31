@@ -12,4 +12,6 @@ public interface GameRepository extends PagingAndSortingRepository<Game, Long > 
 	public Game findGameByIdApiExtEquals(Long idApiExt);
 
 	Page<Game> findAllByOrderByNameAsc(Pageable pageable);
+
+	Game getByNameEquals(String name);
 }

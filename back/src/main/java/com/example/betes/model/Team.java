@@ -21,8 +21,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
+// TODO rajouter un notNull, et trouver un moyen de contourner
     @OneToOne
     private Game game;
 
@@ -34,7 +33,7 @@ public class Team {
     private Long idApiExt;
 
     @JsonBackReference
-    @ManyToMany
-    private List<Matches> matchesList;
+    @ManyToMany(mappedBy = "teamsParticipating")
+    private List<MatchEntity> matchEntityList;
 
 }

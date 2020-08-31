@@ -2,7 +2,6 @@ package com.example.betes.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -42,5 +41,5 @@ public class Game {
 
 	@JsonBackReference
 	@OneToMany
-	private List<Matches> matchesList;
+	private List<MatchEntity> matchEntityList;
 }
