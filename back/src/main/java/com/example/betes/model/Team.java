@@ -31,11 +31,7 @@ public class Team {
 
     private Long idApiExt;
 
-    @OneToMany
+    @ManyToMany
     private List<Matches> matchesList;
-
-
-
-
 
 }

@@ -37,16 +37,17 @@ public class CustomIncidentDeserializer extends StdDeserializer<Incident> {
 		incident.setChange(node.get("change_type").asText());
 
 		node = node.get("object");
-		switch(type)
-		{
+		switch(type) {
 			case "team":
 				Game gameTemp = new Game();
 				Team teamTemp = new Team();
-				gameTemp.setIdApiExt(node.get("current_videogame").get("id").asLong());
-				teamTemp.setGame(gameTemp);
-				teamTemp.setIdApiExt(node.get("id").asLong());
-				teamTemp.setLogo(node.get("image_url").asText());
-				teamTemp.setTeamName(node.get("name").asText());
+				if (node.get("current_videogame") != null) {
+					gameTemp.setIdApiExt(node.get("current_videogame").get("id").asLong());
+					teamTemp.setGame(gameTemp);
+				}
+				if (node.get("id") != null) teamTemp.setIdApiExt(node.get("id").asLong());
+				if (node.get("image_url") != null) teamTemp.setLogo(node.get("image_url").asText());
+				if (node.get("name") != null) teamTemp.setTeamName(node.get("name").asText());
 				System.out.println(incident);
 				incident.setTeam(teamTemp);
 				break;

@@ -178,7 +178,7 @@ Initialise la base de donnée avec TOUTES les équipes
             // https://api.pandascore.co/incidents?since=2020-07-08T15:30:40Z?type=match
 
             // https://api.pandascore.co/incidents?since=2020-07-08T15:30:40Z&per_page=100&type=team&page=1
-            this.updateTeamsSince(lastUpdateApplog.getLastModifDate());
+          /*  this.updateTeamsSince(lastUpdateApplog.getLastModifDate());*/
         }
     }
 
