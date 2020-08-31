@@ -28,5 +28,9 @@ public class DataLogService {
 	public DataLog findFirstByGoalOrderByIdDesc(String goal) {
 		return this.dataLogRepository.findFirstByGoalOrderByIdDesc(goal);
 	}
+	public Boolean needInit() {
+		Long count = this.dataLogRepository.count();
+		return count == 0;
+	}
 
 }

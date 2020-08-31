@@ -3,10 +3,7 @@ package com.example.betes.service;
 import com.example.betes.exception.ResourceAlreadyExistException;
 import com.example.betes.exception.ResourceNotFoundException;
 import com.example.betes.model.*;
-import com.example.betes.repository.BetRepository;
-import com.example.betes.repository.MatchesRepository;
-import com.example.betes.repository.TeamRepository;
-import com.example.betes.repository.UserRepository;
+import com.example.betes.repository.*;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,10 +17,9 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BetService {
@@ -33,6 +29,8 @@ public class BetService {
     public static final int PAGE_MIN = 0;
     private static final String PAGE_VALID_MESSAGE = "La taille de la page doit être comprise entre 10 et 100";
 
+    @Autowired
+    private DataLogRepository dataLogRepository;
     @Autowired
     private BetRepository betRepository;
     @Autowired
@@ -137,4 +135,30 @@ public class BetService {
         return newBet;
     }
 
+    /**
+     * Cette méthode prend un match TERMINE en paramètre,
+     * va trouver chaque pari lié a ce match, et modifier le resultat
+     * @param matches
+     */
+    public void updateBetResult(Matches matches) {
+        Team winningTeam;
+        Date updateDate = new Date();
+        DataLog dataLog = new DataLog();
+        dataLog.setConcernedData("BET");
+        dataLog.setGoal("UPDATE BET");
+        dataLog.setLastModifDate(updateDate);
+        if (matches.getWinner() != null) {
+            winningTeam = matches.getWinner();
+        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "match non terminé");
+        List<Bet> listBetOfMatches = betRepository.findAllByMatchEntity(matches);
+        for (Bet curBet : listBetOfMatches) {
+            // si result match est égal au paris fait; puis up le score de 1;
+            curBet.setResultBet(curBet.getBetOnTeam().equals(winningTeam));
+            curBet.getUser().scoreUp();
+            curBet.setDateUpdate(updateDate);
+            betRepository.saveAll(listBetOfMatches);
+            dataLog.setResult("SUCCESS");
+            dataLogRepository.save(dataLog);
+        }
+    }
 }

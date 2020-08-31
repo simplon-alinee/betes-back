@@ -25,6 +25,7 @@ import javax.xml.crypto.Data;
 import java.io.Console;
 import java.io.IOException;
 import java.net.URI;
+import java.time.*;
 import java.util.*;
 
 
@@ -76,6 +77,7 @@ public class PandaApiService {
         DataLog dataLog = new DataLog();
         dataLog.setLastModifDate(currentDate);
         dataLog.setGoal("UPDATE APP");
+        dataLog.setConcernedData("GAMES");
         String url = pandaApibaseUrl + "/videogames?sort=name";
         HttpEntity req = new HttpEntity(this.headers);
         ResponseEntity<String> response = this.restTemplate.exchange(url, HttpMethod.GET, req, String.class, 1);
@@ -159,6 +161,7 @@ Initialise la base de donnée avec TOUTES les équipes
         DataLog dataLog = new DataLog();
         dataLog.setLastModifDate(currentDate);
         dataLog.setGoal("UPDATE APP");
+        dataLog.setConcernedData("TEAMS");
         String url = pandaApibaseUrl + "/teams?sort=name&per_page=100&page=";
 
         List<Team> teamListTotal = this.updateTeam(dataLog, url);
@@ -170,15 +173,27 @@ Initialise la base de donnée avec TOUTES les équipes
 
 
     @Scheduled(fixedDelay=2100000) // fixed delay de 35 minutes . donnée calculée sur: http://mon-convertisseur.fr/convertisseur-temps.php
-    public void updateAllDataAtFixedRate() throws JsonProcessingException {
+    public void updateAllDataAtFixedRate() throws IOException, InterruptedException {
         // get app last update time
+        Boolean needInit = dataLogService.needInit();
+        if (needInit) {
+            DataLog initLog = new DataLog();
+            initLog.setConcernedData("INIT");
+            initLog.setGoal("UPDATE APP");
+            initLog.setComments("Initialisation des données");
+            initLog.setLastModifDate(new Date());
+            dataLogService.saveDataLog(initLog);
+            this.listeGameApi();
+            this.updateTeamsSince(null);
+        }
         DataLog lastUpdateApplog = dataLogService.findFirstByGoalOrderByIdDesc("UPDATE APP");
-        if (lastUpdateApplog != null) {
+        if (lastUpdateApplog != null && !needInit) {
             System.out.println(lastUpdateApplog.getLastModifDate());
             // https://api.pandascore.co/incidents?since=2020-07-08T15:30:40Z?type=match
-
             // https://api.pandascore.co/incidents?since=2020-07-08T15:30:40Z&per_page=100&type=team&page=1
-          /*  this.updateTeamsSince(lastUpdateApplog.getLastModifDate());*/
+
+            if (!lastUpdateApplog.getConcernedData().equals("GAMES")) this.listeGameApi();
+            if (!lastUpdateApplog.getConcernedData().equals("TEAMS")) this.updateTeamsSince(lastUpdateApplog.getLastModifDate());
         }
     }
 
@@ -188,9 +203,14 @@ Initialise la base de donnée avec TOUTES les équipes
         DataLog dataLog = new DataLog();
         dataLog.setLastModifDate(currentDate);
         dataLog.setGoal("UPDATE APP");
+        dataLog.setConcernedData("TEAMS");
         dataLog.setComments("teams");
-        String url = pandaApibaseUrl + "/incidents?since="+date+"&per_page=100&type=team&page=";
-//        incidents?since=2020-07-08T15:30:40Z&per_page=100&type=team&page=1
+        String url;
+        if (date == null) {
+            url = pandaApibaseUrl + "/incidents?since=2020-01-01T01:00:33Z&per_page=100&type=team&page=" ;
+        } else {
+            url = pandaApibaseUrl + "/incidents?since="+date+"&per_page=100&type=team&page=";
+        }
         HttpEntity req = new HttpEntity(this.headers);
         List<Team> teamListTotal = this.updateTeam(dataLog, url);
         teamService.saveAll(teamListTotal);

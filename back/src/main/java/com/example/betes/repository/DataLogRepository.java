@@ -9,4 +9,5 @@ import javax.xml.crypto.Data;
 public interface DataLogRepository extends PagingAndSortingRepository<DataLog, Long > {
 
 	DataLog findFirstByGoalOrderByIdDesc(String goal);
+
 }

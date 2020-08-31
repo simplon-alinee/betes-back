@@ -30,5 +30,7 @@ public class DataLog implements Serializable  {
 	private String goal;
 	// SUCCESS FAILURE FORFEIT
 	private String result;
+	// Game, Teams, Matches, Bets, Results
+	private String concernedData;
 
 }

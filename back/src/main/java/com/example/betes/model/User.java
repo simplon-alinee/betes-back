@@ -53,4 +53,7 @@ public class User {
     @OneToMany
     private List<Bet> listBet;
 
+    public void scoreUp(){
+        this.score++;
+    }
 }
