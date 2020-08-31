@@ -2,7 +2,10 @@ package com.example.betes.service;
 
 import com.example.betes.exception.ResourceNotFoundException;
 import com.example.betes.model.Bet;
+import com.example.betes.model.User;
 import com.example.betes.repository.BetRepository;
+import com.example.betes.repository.UserRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +30,8 @@ public class BetService {
 
     @Autowired
     private BetRepository betRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public Bet getById(Long id) {
         Optional<Bet> optBet = betRepository.findById(id);
@@ -52,6 +57,39 @@ public class BetService {
 
         Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
         Page<Bet> bets = betRepository.findAllByOrderByDateBetDesc(pageable);
+        if(page >= bets.getTotalPages()){
+            throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
+        } else if(bets.getTotalElements() == 0){
+            throw new EntityNotFoundException("Il n'y a aucun pari dans la base de données");
+        }
+        return bets;
+    }
+
+    public Page<Bet> findAllBetsOfUser(
+            Long userID,
+            @Min(message = "Le numéro de page ne peut être inférieur à 0", value = PAGE_MIN)
+                    Integer page,
+            @Min(value = PAGE_SIZE_MIN, message = PAGE_VALID_MESSAGE)
+            @Max(value = PAGE_SIZE_MAX, message = PAGE_VALID_MESSAGE)
+                    Integer size,
+            String sortProperty,
+            Sort.Direction sortDirection
+    ) throws NotFoundException {
+
+        //Vérification de sortProperty
+        if(Arrays.stream(Bet.class.getDeclaredFields()).
+                map(Field::getName).
+                filter(s -> s.equals(sortProperty)).count() != 1){
+            throw new IllegalArgumentException("La propriété " + sortProperty + " n'existe pas !");
+        }
+
+        User user = null;
+        if (userRepository.findById(userID).isPresent()) {
+            user = userRepository.findById(userID).get();
+        } else throw new NotFoundException("user inexistant");
+
+        Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
+        Page<Bet> bets = betRepository.findAllByUserOrderByDateBetDesc(user, pageable);
         if(page >= bets.getTotalPages()){
             throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
         } else if(bets.getTotalElements() == 0){
