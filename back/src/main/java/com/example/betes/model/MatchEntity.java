@@ -27,7 +27,7 @@ public class MatchEntity {
 
     @NotNull
     @OneToOne
-    private Game Game;
+    private Game game;
 
     private Date dateMatch;
 
