@@ -58,15 +58,15 @@ public class BetService {
         if(Arrays.stream(Bet.class.getDeclaredFields()).
                 map(Field::getName).
                 filter(s -> s.equals(sortProperty)).count() != 1){
-            throw new IllegalArgumentException("La propriété " + sortProperty + " n'existe pas !");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"La propriété " + sortProperty + " n'existe pas !");
         }
 
         Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
         Page<Bet> bets = betRepository.findAllByOrderByDateBetDesc(pageable);
         if(page >= bets.getTotalPages()){
-            throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
         } else if(bets.getTotalElements() == 0){
-            throw new EntityNotFoundException("Il n'y a aucun pari dans la base de données");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Il n'y a aucun pari dans la base de données");
         }
         return bets;
     }
@@ -86,7 +86,7 @@ public class BetService {
         if(Arrays.stream(Bet.class.getDeclaredFields()).
                 map(Field::getName).
                 filter(s -> s.equals(sortProperty)).count() != 1){
-            throw new IllegalArgumentException("La propriété " + sortProperty + " n'existe pas !");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"La propriété " + sortProperty + " n'existe pas !");
         }
 
         User user = null;
@@ -97,9 +97,9 @@ public class BetService {
         Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
         Page<Bet> bets = betRepository.findAllByUserOrderByDateBetDesc(user, pageable);
         if(page >= bets.getTotalPages()){
-            throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
         } else if(bets.getTotalElements() == 0){
-            throw new EntityNotFoundException("Il n'y a aucun pari dans la base de données");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Il n'y a aucun pari dans la base de données");
         }
         return bets;
     }

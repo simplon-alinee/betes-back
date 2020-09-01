@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Max;
@@ -58,9 +60,9 @@ public class TeamService {
         Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
         Page<Team> teams = teamRepository.findAllByOrderByTeamName(pageable);
         if(page >= teams.getTotalPages()){
-            throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + teams.getTotalPages());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Le numéro de page ne peut être supérieur à " + teams.getTotalPages());
         } else if(teams.getTotalElements() == 0){
-            throw new EntityNotFoundException("Il n'y a aucune équipe dans la base de données");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Il n'y a aucune équipe dans la base de données");
         }
         return teams;
     }

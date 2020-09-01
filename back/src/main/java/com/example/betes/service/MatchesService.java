@@ -56,7 +56,7 @@ public class MatchesService {
         Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
         Page<MatchEntity> matches = matchesRepository.findAllByOrderByDateMatchDesc(pageable);
         if(page >= matches.getTotalPages()){
-            throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + matches.getTotalPages());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Le numéro de page ne peut être supérieur à " + matches.getTotalPages());
         } else if(matches.getTotalElements() == 0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Il n'y a aucun match dans la base de données");
         }
