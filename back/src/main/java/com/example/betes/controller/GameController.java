@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/game")
 public class GameController {
 
