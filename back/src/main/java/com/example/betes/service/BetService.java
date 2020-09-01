@@ -152,7 +152,11 @@ public class BetService {
         for (Bet curBet : listBetOfMatches) {
             // si result match est égal au paris fait; puis up le score de 1;
             curBet.setResultBet(curBet.getBetOnTeam().equals(winningTeam));
-            curBet.getUser().scoreUp();
+            if (curBet.getBetOnTeam().equals(winningTeam)){
+                curBet.getUser().scoreUp();
+            } else {
+                curBet.getUser().scoreDown();
+            }
             curBet.setDateUpdate(updateDate);
             betRepository.saveAll(listBetOfMatches);
             dataLog.setResult("SUCCESS");

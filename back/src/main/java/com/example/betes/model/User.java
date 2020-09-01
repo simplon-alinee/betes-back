@@ -57,4 +57,7 @@ public class User {
     public void scoreUp(){
         this.score++;
     }
+    public void scoreDown(){
+        this.score--;
+    }
 }
