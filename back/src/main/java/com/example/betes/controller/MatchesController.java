@@ -27,4 +27,16 @@ public class MatchesController {
             @RequestParam(value = "sortDirection", defaultValue = "DESC") Sort.Direction sortDirection) {
         return matchesService.findAllMatches(page, size, sortProperty, sortDirection);
     }
+
+    @GetMapping("/all")
+    public Page<MatchEntity> findAllMatchEntityByGameId(
+            @RequestParam(value = "gameId") Long gameId,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "sortProperty", defaultValue = "dateMatch") String sortProperty,
+            @RequestParam(value = "sortDirection", defaultValue = "DESC") Sort.Direction sortDirection) {
+        return matchesService.findAllMatches(page, size, sortProperty, sortDirection);
+    }
+
+
 }

@@ -60,4 +60,31 @@ public class MatchesService {
         }
         return matches;
     }
+
+    public Page<MatchEntity> findAllMatchEntityByGameId(
+            @Min(message = "Le numéro de page ne peut être inférieur à 0", value = PAGE_MIN)
+                    Integer page,
+            @Min(value = PAGE_SIZE_MIN, message = PAGE_VALID_MESSAGE)
+            @Max(value = PAGE_SIZE_MAX, message = PAGE_VALID_MESSAGE)
+                    Integer size,
+            String sortProperty,
+            Sort.Direction sortDirection
+    ) {
+        //Vérification de sortProperty
+        if(Arrays.stream(MatchEntity.class.getDeclaredFields()).
+                map(Field::getName).
+                filter(s -> s.equals(sortProperty)).count() != 1){
+            throw new IllegalArgumentException("La propriété " + sortProperty + " n'existe pas !");
+        }
+
+        Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
+        Page<MatchEntity> matches = matchesRepository.findAllByOrderByDateMatchDesc(pageable);
+        if(page >= matches.getTotalPages()){
+            throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + matches.getTotalPages());
+        } else if(matches.getTotalElements() == 0){
+            throw new EntityNotFoundException("Il n'y a aucun match dans la base de données");
+        }
+        return matches;
+    }
+
 }

@@ -8,4 +8,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface MatchesRepository extends PagingAndSortingRepository<MatchEntity, Long > {
 
     Page<MatchEntity> findAllByOrderByDateMatchDesc(Pageable pageable);
+    Page<MatchEntity> findAllByGameIdOrderByDateMatchDesc(Long gameId,Pageable pageable);
 }
