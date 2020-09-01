@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Max;
@@ -53,7 +55,7 @@ public class GameService {
 		if(page >= games.getTotalPages()){
 			throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + games.getTotalPages());
 		} else if(games.getTotalElements() == 0){
-			throw new EntityNotFoundException("Il n'y a aucun jeu dans la base de données");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Il n'y a aucun jeu dans la base de données");
 		}
 		return games;
 	}

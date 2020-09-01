@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Max;
@@ -56,12 +58,12 @@ public class MatchesService {
         if(page >= matches.getTotalPages()){
             throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + matches.getTotalPages());
         } else if(matches.getTotalElements() == 0){
-            throw new EntityNotFoundException("Il n'y a aucun match dans la base de données");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Il n'y a aucun match dans la base de données");
         }
         return matches;
     }
 
-    public Page<MatchEntity> findAllMatchEntityByGameId(
+    public Page<MatchEntity> findAllMatchEntityByGameId(Long gameId,
             @Min(message = "Le numéro de page ne peut être inférieur à 0", value = PAGE_MIN)
                     Integer page,
             @Min(value = PAGE_SIZE_MIN, message = PAGE_VALID_MESSAGE)
@@ -78,11 +80,11 @@ public class MatchesService {
         }
 
         Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
-        Page<MatchEntity> matches = matchesRepository.findAllByOrderByDateMatchDesc(pageable);
+        Page<MatchEntity> matches = matchesRepository.findAllByGameIdOrderByDateMatchDesc(gameId,pageable);
         if(page >= matches.getTotalPages()){
-            throw new IllegalArgumentException("Le numéro de page ne peut être supérieur à " + matches.getTotalPages());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Le numéro de page ne peut être supérieur à " + matches.getTotalPages());
         } else if(matches.getTotalElements() == 0){
-            throw new EntityNotFoundException("Il n'y a aucun match dans la base de données");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Il n'y a aucun match dans la base de données");
         }
         return matches;
     }

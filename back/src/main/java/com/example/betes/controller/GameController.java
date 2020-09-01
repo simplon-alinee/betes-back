@@ -29,4 +29,6 @@ public class GameController {
             @RequestParam(value = "sortDirection", defaultValue = "ASC") Sort.Direction sortDirection) {
         return gameService.findAllGames(page, size, sortProperty, sortDirection);
     }
+
+
 }
