@@ -1,6 +1,7 @@
 package com.example.betes.controller;
 
 import com.example.betes.model.MatchEntity;
+import com.example.betes.repository.MatchesRepository;
 import com.example.betes.service.MatchesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ public class MatchesController {
 
     @Autowired
     private MatchesService matchesService;
+
 
     @GetMapping("/{id}")
     public MatchEntity getById(@PathVariable("id") Long id) {

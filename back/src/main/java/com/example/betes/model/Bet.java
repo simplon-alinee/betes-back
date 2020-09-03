@@ -29,6 +29,7 @@ public class Bet {
     /*
     matchId because matches causes a bug with jpa
      */
+
     @OneToOne
     private MatchEntity matchEntity;
 

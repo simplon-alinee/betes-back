@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.lang.reflect.Field;
@@ -38,11 +37,18 @@ public class BetService {
     @Autowired
     private MatchesRepository matchesRepository;
 
-
     public Bet getById(Long id) {
         Optional<Bet> optBet = betRepository.findById(id);
-        if (optBet.isPresent() ) { return optBet.get();} else {throw new ResourceNotFoundException();
+        if (optBet.isPresent()) {
+            return optBet.get();
+        } else {
+            throw new ResourceNotFoundException();
         }
+    }
+
+    public List<Bet> getByMatchId(MatchEntity matchEntity) {
+        List<Bet> bet = betRepository.findAllByMatchEntity(matchEntity);
+        return bet;
     }
 
     public Page<Bet> findAllBets(
@@ -55,18 +61,18 @@ public class BetService {
             Sort.Direction sortDirection
     ) {
         //Vérification de sortProperty
-        if(Arrays.stream(Bet.class.getDeclaredFields()).
+        if (Arrays.stream(Bet.class.getDeclaredFields()).
                 map(Field::getName).
-                filter(s -> s.equals(sortProperty)).count() != 1){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"La propriété " + sortProperty + " n'existe pas !");
+                filter(s -> s.equals(sortProperty)).count() != 1) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La propriété " + sortProperty + " n'existe pas !");
         }
 
-        Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
+        Pageable pageable = PageRequest.of(page, size, sortDirection, sortProperty);
         Page<Bet> bets = betRepository.findAllByOrderByDateBetDesc(pageable);
-        if(page >= bets.getTotalPages()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
-        } else if(bets.getTotalElements() == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Il n'y a aucun pari dans la base de données");
+        if (page >= bets.getTotalPages()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
+        } else if (bets.getTotalElements() == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Il n'y a aucun pari dans la base de données");
         }
         return bets;
     }
@@ -83,10 +89,10 @@ public class BetService {
     ) throws NotFoundException {
 
         //Vérification de sortProperty
-        if(Arrays.stream(Bet.class.getDeclaredFields()).
+        if (Arrays.stream(Bet.class.getDeclaredFields()).
                 map(Field::getName).
-                filter(s -> s.equals(sortProperty)).count() != 1){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"La propriété " + sortProperty + " n'existe pas !");
+                filter(s -> s.equals(sortProperty)).count() != 1) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La propriété " + sortProperty + " n'existe pas !");
         }
 
         User user = null;
@@ -94,15 +100,16 @@ public class BetService {
             user = userRepository.findById(userID).get();
         } else throw new NotFoundException("user inexistant");
 
-        Pageable pageable = PageRequest.of(page,size,sortDirection, sortProperty);
+        Pageable pageable = PageRequest.of(page, size, sortDirection, sortProperty);
         Page<Bet> bets = betRepository.findAllByUserOrderByDateBetDesc(user, pageable);
-        if(page >= bets.getTotalPages()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
-        } else if(bets.getTotalElements() == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Il n'y a aucun pari dans la base de données");
+        if (page >= bets.getTotalPages()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Le numéro de page ne peut être supérieur à " + bets.getTotalPages());
+        } else if (bets.getTotalElements() == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Il n'y a aucun pari dans la base de données");
         }
         return bets;
     }
+
     public Bet createBet(BetSkeleton betSkeleton) {
         Date createDate = new Date();
         User user;
@@ -119,7 +126,8 @@ public class BetService {
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "match inexistant");
 
 //        if (betRepository.existsByBetOnTeamAndUserAndMatchEntity(team, user, match)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ce pari existe déjà");
-        if (betRepository.existsByUserAndMatchEntity(user, match)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le joueur à déjà parié sur ce match");
+        if (betRepository.existsByUserAndMatchEntity(user, match))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le joueur à déjà parié sur ce match");
 
         Bet newBet = new Bet();
         newBet.setBetOnTeam(team);
@@ -130,12 +138,14 @@ public class BetService {
         newBet.setDateUpdate(null);
 
         betRepository.save(newBet);
+
         return newBet;
     }
 
     /**
      * Cette méthode prend un match TERMINE en paramètre,
      * va trouver chaque pari lié a ce match, et modifier le resultat
+     *
      * @param matchEntity
      */
     public void updateBetResult(MatchEntity matchEntity) {
@@ -152,7 +162,7 @@ public class BetService {
         for (Bet curBet : listBetOfMatches) {
             // si result match est égal au paris fait; puis up le score de 1;
             curBet.setResultBet(curBet.getBetOnTeam().equals(winningTeam));
-            if (curBet.getBetOnTeam().equals(winningTeam)){
+            if (curBet.getBetOnTeam().equals(winningTeam)) {
                 curBet.getUser().scoreUp();
             } else {
                 curBet.getUser().scoreDown();

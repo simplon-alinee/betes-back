@@ -38,6 +38,7 @@ public class MatchEntity {
     @NotNull
     private Integer idApiExt;
 
+    @JsonBackReference
     @OneToMany
     private List<Bet> listBet;
 
